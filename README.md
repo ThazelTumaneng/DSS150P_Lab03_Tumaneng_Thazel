@@ -4,11 +4,11 @@
 Python 3.12.10
 
 ## Package Versions
-pandas==2.2.3
-pyarrow==17.0.0
-psycopg[binary]==3.2.3
-python-dotenv==1.0.1
-PyYAML==6.0.2
+- pandas==2.2.3
+- pyarrow==17.0.0
+- psycopg[binary]==3.2.3
+- python-dotenv==1.0.1
+- PyYAML==6.0.2
 
 ## Why the virtual environment should not be committed to git
 Virtual environments contain compiled executables and hardcoded absolute system paths that are tied strictly to the machine that created them. If this folder is committed to version control, any other user pulling the repository onto a different operating system will encounter immediate crashes because the underlying architectyre and file paths do not match.
