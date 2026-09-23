@@ -1,0 +1,90 @@
+[2026-09-23T04:32:13.201+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-09-23T04:32:13.244+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dss150p_sales_pipeline.load manual__2026-09-23T03:17:25+00:00 [queued]>
+[2026-09-23T04:32:13.273+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dss150p_sales_pipeline.load manual__2026-09-23T03:17:25+00:00 [queued]>
+[2026-09-23T04:32:13.274+0000] {taskinstance.py:2867} INFO - Starting attempt 4 of 6
+[2026-09-23T04:32:13.304+0000] {taskinstance.py:2890} INFO - Executing <Task(BashOperator): load> on 2026-09-23 03:17:25+00:00
+[2026-09-23T04:32:13.317+0000] {standard_task_runner.py:72} INFO - Started process 1281 to run task
+[2026-09-23T04:32:13.322+0000] {standard_task_runner.py:104} INFO - Running: ['airflow', 'tasks', 'run', 'dss150p_sales_pipeline', 'load', 'manual__2026-09-23T03:17:25+00:00', '--job-id', '21', '--raw', '--subdir', 'DAGS_FOLDER/dss150p_pipeline.py', '--cfg-path', '/tmp/tmp5m2b5sxu']
+[2026-09-23T04:32:13.328+0000] {standard_task_runner.py:105} INFO - Job 21: Subtask load
+[2026-09-23T04:32:13.451+0000] {task_command.py:467} INFO - Running <TaskInstance: dss150p_sales_pipeline.load manual__2026-09-23T03:17:25+00:00 [running]> on host c76e692badc3
+[2026-09-23T04:32:13.580+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='dss150p' AIRFLOW_CTX_DAG_ID='dss150p_sales_pipeline' AIRFLOW_CTX_TASK_ID='load' AIRFLOW_CTX_EXECUTION_DATE='2026-09-23T03:17:25+00:00' AIRFLOW_CTX_TRY_NUMBER='4' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-09-23T03:17:25+00:00'
+[2026-09-23T04:32:13.581+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2026-09-23T04:32:13.606+0000] {subprocess.py:78} INFO - Tmp dir root location: /tmp
+[2026-09-23T04:32:13.609+0000] {subprocess.py:88} INFO - Running command: ['/usr/bin/bash', '-c', 'cd /opt/airflow/project && PIPELINE_RUN_ID="manual__2026-09-23T03:17:25+00:00" python -m src.cli load --run-mode partition --year 2026 --month 2']
+[2026-09-23T04:32:13.627+0000] {subprocess.py:99} INFO - Output:
+[2026-09-23T04:32:14.885+0000] {subprocess.py:106} INFO - usage: cli.py [-h]
+[2026-09-23T04:32:14.896+0000] {subprocess.py:106} INFO -               {validate-env,extract,transform,load,validate,benchmark,load-partition,run-all}
+[2026-09-23T04:32:14.902+0000] {subprocess.py:106} INFO -               ...
+[2026-09-23T04:32:14.906+0000] {subprocess.py:106} INFO - cli.py: error: unrecognized arguments: --run-mode partition --year 2026 --month 2
+[2026-09-23T04:32:15.120+0000] {subprocess.py:110} INFO - Command exited with return code 2
+[2026-09-23T04:32:15.150+0000] {taskinstance.py:3313} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 763, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/operators/bash.py", line 276, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 2.
+[2026-09-23T04:32:15.176+0000] {taskinstance.py:1226} INFO - Marking task as UP_FOR_RETRY. dag_id=dss150p_sales_pipeline, task_id=load, run_id=manual__2026-09-23T03:17:25+00:00, execution_date=20260923T031725, start_date=20260923T043213, end_date=20260923T043215
+[2026-09-23T04:32:15.282+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2026-09-23T04:32:15.284+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 21 for task load (Bash command failed. The command returned a non-zero exit code 2.; 1281)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3006, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 274, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3161, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 3185, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 763, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/taskinstance.py", line 734, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/models/baseoperator.py", line 424, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.11/site-packages/airflow/operators/bash.py", line 276, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 2.
+[2026-09-23T04:32:15.306+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2026-09-23T04:32:15.351+0000] {taskinstance.py:3901} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-09-23T04:32:15.366+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
