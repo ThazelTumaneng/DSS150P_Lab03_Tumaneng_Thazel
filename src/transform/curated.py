@@ -39,7 +39,7 @@ def build_curated(staging: dict, run_id: str):
     
     # Instead of checking 'discount', use 'discount_pct' properly:
     if "discount_pct" in curated.columns:
-        curated["discount_amount"] = curated["unit_price"] * curated["quantity"] * (curated["discount_pct"] / 100.0)
+        curated["discount_amount"] = curated["unit_price"] * curated["quantity"] * curated["discount_pct"]
     else:
         curated["discount_amount"] = 0.0
 
