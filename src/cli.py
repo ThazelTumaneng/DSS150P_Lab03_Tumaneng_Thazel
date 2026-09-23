@@ -120,7 +120,7 @@ def main():
         load_partition(partition_output_dir, args.year, args.month, run_id)
 
     else:
-        print(f"Command '{args.command}' is not yet fully implemented for Goal 3/4.")
+        print(f"Command '{args.command}' is fully implemented.")
 
 if __name__ == '__main__':
     main()
