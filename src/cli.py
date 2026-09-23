@@ -12,6 +12,23 @@ from src.load.postgres import upsert_curated
 # Configure logging for meaningful error context
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+def validate_pipeline():
+    """Runs standalone data validation rules on curated data."""
+    print("Running standalone pipeline validation...")
+    import glob
+    import pandas as pd
+    
+    parquet_files = glob.glob("data/**/*.parquet", recursive=True)
+    if not parquet_files:
+        print("Error: No curated parquet files found to validate.")
+        return
+        
+    for file in parquet_files:
+        df = pd.read_parquet(file)
+        assert (df["quantity"] > 0).all(), "Validation failed: Found non-positive quantities!"
+        assert (df["total_amount"] >= 0).all(), "Validation failed: Found negative total amounts!"
+        print(f"Successfully validated {file}: {len(df)} rows passed all rules.")
+
 def main():
     parser = argparse.ArgumentParser(description='DSS150P modular pipeline')
     sub = parser.add_subparsers(dest='command', required=True)
@@ -30,6 +47,7 @@ def main():
         print('DB host/database=', DB['host'], DB['dbname'])
         print('Configured source=', SETTINGS['pipeline']['source_dir'])
         return
+        
     # Wire the modular functions together for standard execution commands
     if args.command in ['run-all', 'load', 'extract', 'transform']:
         run_id = new_run_id()
@@ -119,8 +137,11 @@ def main():
         from src.load.postgres import load_partition
         load_partition(partition_output_dir, args.year, args.month, run_id)
 
+    elif args.command == 'validate':
+        validate_pipeline()
+
     else:
-        print(f"Command '{args.command}' is fully implemented.")
+        print(f"Command '{args.command}' is not recognized.")
 
 if __name__ == '__main__':
     main()

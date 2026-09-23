@@ -37,10 +37,13 @@ def build_curated(staging: dict, run_id: str):
     # 3. Calculate Financial Metrics
     curated['gross_amount'] = curated['quantity'] * curated['unit_price']
     
-    if 'discount' in curated.columns:
-        curated['discount_amount'] = curated['gross_amount'] * curated['discount']
+    # Instead of checking 'discount', use 'discount_pct' properly:
+    if "discount_pct" in curated.columns:
+        curated["discount_amount"] = curated["unit_price"] * curated["quantity"] * (curated["discount_pct"] / 100.0)
     else:
-        curated['discount_amount'] = 0.0
+        curated["discount_amount"] = 0.0
+
+    curated["total_amount"] = (curated["quantity"] * curated["unit_price"]) - curated["discount_amount"]
         
     curated['net_amount'] = curated['gross_amount'] - curated['discount_amount']
 
@@ -56,11 +59,11 @@ def build_curated(staging: dict, run_id: str):
     ).astype(str)
 
     # Ensure order_year and order_month exist for audit and partitioning requirements
-    date_col = 'order_date' if 'order_date' in curated.columns else 'created_at'
-    if date_col in curated.columns:
-        curated[date_col] = pd.to_datetime(curated[date_col])
-        curated['order_year'] = curated[date_col].dt.year
-        curated['order_month'] = curated[date_col].dt.month
+    curated["order_timestamp"] = pd.to_datetime(curated["order_timestamp"])
+
+    # Extract strictly from order timestamp to avoid pulling the customer creation date
+    curated["order_year"] = curated["order_timestamp"].dt.year
+    curated["order_month"] = curated["order_timestamp"].dt.month
 
     # 5. Run Validation Checks (Goal 2 Quality Assurance)
     validation_errors = validate_curated(curated)
