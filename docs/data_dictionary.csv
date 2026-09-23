@@ -1,1 +1,23 @@
 layer,column_name,data_type,nullable,description,source_field,transformation_rule
+raw,order_id,string,False,Unique identifier for the order,order_id,Direct ingestion from source CSV
+raw,customer_id,string,False,Unique identifier for the customer,customer_id,Direct ingestion from source CSV
+raw,order_date,string,False,Timestamp or date when the order was placed,order_date,Direct ingestion from source CSV
+raw,product_id,string,False,Unique identifier for the product,product_id,Direct ingestion from source CSV
+raw,quantity,integer,False,Quantity of items ordered,quantity,Direct ingestion from source CSV
+raw,unit_price,float,False,Price per unit of the product,unit_price,Direct ingestion from source CSV
+curated,order_id,string,False,Unique identifier for the order,order_id,Trim whitespace and ensure string type
+curated,customer_id,string,False,Unique identifier for the customer,customer_id,Trim whitespace and ensure string type
+curated,order_timestamp,datetime,False,Standardized datetime format for the order date,order_date,Parsed to standard datetime format (UTC)
+curated,product_id,string,False,Unique identifier for the product,product_id,Trim whitespace and uppercase
+curated,quantity,integer,False,Validated quantity of items ordered,quantity,Cast to integer; filtered out non-positive values
+curated,unit_price,float,False,Validated unit price of the product,unit_price,Cast to float; filtered out negative values
+curated,total_amount,float,False,Calculated total sale amount for the line item,"quantity, unit_price",Calculated as quantity * unit_price
+curated,order_year,integer,False,Year extracted from order timestamp for partitioning,order_timestamp,Extracted year component
+curated,order_month,integer,False,Month extracted from order timestamp for partitioning,order_timestamp,Extracted month component
+presentation,order_id,VARCHAR,False,Primary key for the sales fact table,order_id,Mapped directly from curated layer; unique constraint enforced
+presentation,customer_id,VARCHAR,False,Customer identifier in data warehouse,customer_id,Mapped directly from curated layer
+presentation,order_timestamp,TIMESTAMP,False,Order placement timestamp,order_timestamp,Mapped directly from curated layer
+presentation,product_id,VARCHAR,False,Product identifier,product_id,Mapped directly from curated layer
+presentation,quantity,INTEGER,False,Order quantity,quantity,Mapped directly from curated layer
+presentation,unit_price,NUMERIC,False,Product unit price,unit_price,Mapped directly from curated layer
+presentation,total_amount,NUMERIC,False,Total calculated amount,total_amount,Mapped directly from curated layer; upsert on conflict
