@@ -1,4 +1,6 @@
 import pandas as pd
+import logging
+from src.validate.quality import validate_curated
 
 def build_curated(staging: dict, run_id: str):
     """Join staging orders/customers/products and create analysis-ready sales rows.
@@ -13,7 +15,6 @@ def build_curated(staging: dict, run_id: str):
     products = staging['products']
 
     # 1. Identify and Quarantine Orphans
-    # An order is an orphan if its customer_id or product_id doesn't exist in the dimension tables
     valid_customers = orders['customer_id'].isin(customers['customer_id'])
     valid_products = orders['product_id'].isin(products['product_id'])
     
@@ -27,7 +28,6 @@ def build_curated(staging: dict, run_id: str):
     valid_orders = orders[~is_orphan].copy()
 
     # 2. Join Datasets
-    # Use inner joins since orphans are already filtered out
     curated = valid_orders.merge(
         customers, on='customer_id', how='inner', suffixes=('', '_customer')
     ).merge(
@@ -37,7 +37,6 @@ def build_curated(staging: dict, run_id: str):
     # 3. Calculate Financial Metrics
     curated['gross_amount'] = curated['quantity'] * curated['unit_price']
     
-    # Check if a discount column exists; if not, default to 0
     if 'discount' in curated.columns:
         curated['discount_amount'] = curated['gross_amount'] * curated['discount']
     else:
@@ -49,12 +48,27 @@ def build_curated(staging: dict, run_id: str):
     curated['processed_at_utc'] = pd.Timestamp.utcnow()
     curated['pipeline_run_id'] = run_id
     
-    # Generate a record hash using Pandas hashing utility for data integrity tracking
     hash_columns = ['order_id', 'customer_id', 'product_id', 'updated_at']
     available_hash_cols = [c for c in hash_columns if c in curated.columns]
     
     curated['record_hash'] = pd.util.hash_pandas_object(
         curated[available_hash_cols], index=False
     ).astype(str)
+
+    # Ensure order_year and order_month exist for audit and partitioning requirements
+    date_col = 'order_date' if 'order_date' in curated.columns else 'created_at'
+    if date_col in curated.columns:
+        curated[date_col] = pd.to_datetime(curated[date_col])
+        curated['order_year'] = curated[date_col].dt.year
+        curated['order_month'] = curated[date_col].dt.month
+
+    # 5. Run Validation Checks (Goal 2 Quality Assurance)
+    validation_errors = validate_curated(curated)
+    if validation_errors:
+        logging.warning("Data quality validation issues detected in curated dataset:")
+        for error in validation_errors:
+            logging.warning(f" - {error}")
+    else:
+        logging.info("Curated dataset passed all data quality validations successfully.")
 
     return curated, orphans
