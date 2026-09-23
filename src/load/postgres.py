@@ -38,26 +38,19 @@ def upsert_curated(df, run_id: str) -> int:
     metadata = MetaData()
     table_obj = Table(table_name, metadata, autoload_with=db_engine, schema=schema_name)
 
-    chunksize = 100
     with db_engine.begin() as conn:
-        for i in range(0, len(df), chunksize):
-            chunk = df.iloc[i:i+chunksize]
-            data = chunk.to_dict(orient='records')
-            if not data:
-                continue
-            
-            stmt = insert(table_obj).values(data)
-            update_cols = {c.name: c for c in stmt.excluded if c.name != 'order_id'}
-            
-            upsert_stmt = stmt.on_conflict_do_update(
-                index_elements=['order_id'],
-                set_=update_cols,
-                where=(table_obj.c.record_hash != stmt.excluded.record_hash)
-            )
-            
-            conn.execute(upsert_stmt)
-    
-    return len(df)
+        existing_cols = {c.name for c in table_obj.columns}
+        for col in df.columns:
+            if col not in existing_cols:
+                # Infer simple types or default to TEXT/FLOAT
+                col_type = "FLOAT" if "amount" in col or "price" in col else "TEXT"
+                if "year" in col or "month" in col or "quantity" in col:
+                    col_type = "INTEGER"
+                conn.exec_driver_sql(f"ALTER TABLE {schema_name}.{table_name} ADD COLUMN {col} {col_type};")
+        
+        # Re-reflect to pick up any newly added columns
+        metadata.clear()
+        table_obj = Table(table_name, metadata, autoload_with=db_engine, schema=schema_name)
 
 
 def load_partition(df_or_path, year: int, month: int, run_id: str) -> int:

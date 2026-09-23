@@ -3,18 +3,18 @@ from pathlib import Path
 
 def generate_dictionary():
     data = [
-        # Raw Layer
+        # Raw Layer 
         {"layer": "raw", "column_name": "order_id", "data_type": "string", "nullable": "False", "description": "Unique identifier for the order", "source_field": "order_id", "transformation_rule": "Direct ingestion from source CSV"},
         {"layer": "raw", "column_name": "customer_id", "data_type": "string", "nullable": "False", "description": "Unique identifier for the customer", "source_field": "customer_id", "transformation_rule": "Direct ingestion from source CSV"},
-        {"layer": "raw", "column_name": "order_date", "data_type": "string", "nullable": "False", "description": "Timestamp or date when the order was placed", "source_field": "order_date", "transformation_rule": "Direct ingestion from source CSV"},
+        {"layer": "raw", "column_name": "order_timestamp", "data_type": "string", "nullable": "False", "description": "Raw timestamp string when the order was placed", "source_field": "order_timestamp", "transformation_rule": "Direct ingestion from source CSV"},
         {"layer": "raw", "column_name": "product_id", "data_type": "string", "nullable": "False", "description": "Unique identifier for the product", "source_field": "product_id", "transformation_rule": "Direct ingestion from source CSV"},
         {"layer": "raw", "column_name": "quantity", "data_type": "integer", "nullable": "False", "description": "Quantity of items ordered", "source_field": "quantity", "transformation_rule": "Direct ingestion from source CSV"},
         {"layer": "raw", "column_name": "unit_price", "data_type": "float", "nullable": "False", "description": "Price per unit of the product", "source_field": "unit_price", "transformation_rule": "Direct ingestion from source CSV"},
         
-        # Curated Layer
+        # Curated Layer 
         {"layer": "curated", "column_name": "order_id", "data_type": "string", "nullable": "False", "description": "Unique identifier for the order", "source_field": "order_id", "transformation_rule": "Trim whitespace and ensure string type"},
         {"layer": "curated", "column_name": "customer_id", "data_type": "string", "nullable": "False", "description": "Unique identifier for the customer", "source_field": "customer_id", "transformation_rule": "Trim whitespace and ensure string type"},
-        {"layer": "curated", "column_name": "order_timestamp", "data_type": "datetime", "nullable": "False", "description": "Standardized datetime format for the order date", "source_field": "order_date", "transformation_rule": "Parsed to standard datetime format (UTC)"},
+        {"layer": "curated", "column_name": "order_timestamp", "data_type": "datetime", "nullable": "False", "description": "Standardized datetime format for the order timestamp", "source_field": "order_timestamp", "transformation_rule": "Parsed to standard datetime format (UTC)"},
         {"layer": "curated", "column_name": "product_id", "data_type": "string", "nullable": "False", "description": "Unique identifier for the product", "source_field": "product_id", "transformation_rule": "Trim whitespace and uppercase"},
         {"layer": "curated", "column_name": "quantity", "data_type": "integer", "nullable": "False", "description": "Validated quantity of items ordered", "source_field": "quantity", "transformation_rule": "Cast to integer; filtered out non-positive values"},
         {"layer": "curated", "column_name": "unit_price", "data_type": "float", "nullable": "False", "description": "Validated unit price of the product", "source_field": "unit_price", "transformation_rule": "Cast to float; filtered out negative values"},
