@@ -3234,3 +3234,73 @@
 [2026-09-23T06:58:46.102+0000] {logging_mixin.py:190} INFO - [2026-09-23T06:58:46.101+0000] {dag.py:3239} INFO - Sync 1 DAGs
 [2026-09-23T06:58:46.208+0000] {logging_mixin.py:190} INFO - [2026-09-23T06:58:46.208+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
 [2026-09-23T06:58:46.257+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.423 seconds
+[2026-09-23T06:59:16.430+0000] {processor.py:186} INFO - Started process (PID=3308) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T06:59:16.435+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T06:59:16.442+0000] {logging_mixin.py:190} INFO - [2026-09-23T06:59:16.441+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T06:59:16.479+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T06:59:16.559+0000] {logging_mixin.py:190} INFO - [2026-09-23T06:59:16.559+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T06:59:16.609+0000] {logging_mixin.py:190} INFO - [2026-09-23T06:59:16.608+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T06:59:16.646+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.242 seconds
+[2026-09-23T06:59:46.822+0000] {processor.py:186} INFO - Started process (PID=3313) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T06:59:46.824+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T06:59:46.828+0000] {logging_mixin.py:190} INFO - [2026-09-23T06:59:46.827+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T06:59:46.850+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T06:59:46.910+0000] {logging_mixin.py:190} INFO - [2026-09-23T06:59:46.909+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T06:59:46.951+0000] {logging_mixin.py:190} INFO - [2026-09-23T06:59:46.950+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T06:59:46.977+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.166 seconds
+[2026-09-23T07:00:17.279+0000] {processor.py:186} INFO - Started process (PID=3318) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:00:17.283+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T07:00:17.290+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:00:17.289+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:00:17.338+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:00:17.460+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:00:17.459+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T07:00:17.509+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:00:17.509+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T07:00:17.560+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.312 seconds
+[2026-09-23T07:00:47.721+0000] {processor.py:186} INFO - Started process (PID=3323) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:00:47.725+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T07:00:47.733+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:00:47.733+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:00:47.778+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:00:47.862+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:00:47.862+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T07:00:47.896+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:00:47.896+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T07:00:47.927+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.227 seconds
+[2026-09-23T07:01:18.147+0000] {processor.py:186} INFO - Started process (PID=3328) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:01:18.151+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T07:01:18.162+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:01:18.161+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:01:18.194+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:01:18.279+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:01:18.279+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T07:01:18.332+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:01:18.331+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T07:01:18.367+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.231 seconds
+[2026-09-23T07:01:48.551+0000] {processor.py:186} INFO - Started process (PID=3333) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:01:48.557+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T07:01:48.569+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:01:48.568+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:01:48.642+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:01:48.729+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:01:48.729+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T07:01:48.772+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:01:48.772+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T07:01:48.792+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.278 seconds
+[2026-09-23T07:02:19.098+0000] {processor.py:186} INFO - Started process (PID=3338) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:02:19.101+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T07:02:19.107+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:02:19.106+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:02:19.145+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:02:19.257+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:02:19.257+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T07:02:19.303+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:02:19.303+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T07:02:19.340+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.259 seconds
+[2026-09-23T07:02:49.534+0000] {processor.py:186} INFO - Started process (PID=3343) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:02:49.538+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T07:02:49.545+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:02:49.544+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:02:49.590+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:02:49.709+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:02:49.708+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T07:02:49.768+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:02:49.768+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T07:02:49.808+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.318 seconds
+[2026-09-23T07:03:20.061+0000] {processor.py:186} INFO - Started process (PID=3348) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:03:20.064+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T07:03:20.072+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:03:20.071+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:03:20.147+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:03:20.305+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:03:20.304+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T07:03:20.358+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:03:20.358+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T07:03:20.401+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.406 seconds
+[2026-09-23T07:03:50.735+0000] {processor.py:186} INFO - Started process (PID=3353) to work on /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:03:50.738+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/dss150p_pipeline.py for tasks to queue
+[2026-09-23T07:03:50.749+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:03:50.748+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:03:50.811+0000] {processor.py:925} INFO - DAG(s) 'dss150p_sales_pipeline' retrieved from /opt/airflow/dags/dss150p_pipeline.py
+[2026-09-23T07:03:50.900+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:03:50.900+0000] {dag.py:3239} INFO - Sync 1 DAGs
+[2026-09-23T07:03:50.956+0000] {logging_mixin.py:190} INFO - [2026-09-23T07:03:50.956+0000] {dag.py:4180} INFO - Setting next_dagrun for dss150p_sales_pipeline to 2026-09-23 02:00:00+00:00, run_after=2026-09-24 02:00:00+00:00
+[2026-09-23T07:03:51.001+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/dss150p_pipeline.py took 0.282 seconds
