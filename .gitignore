@@ -1,6 +1,17 @@
-.env
+# Python / Environment
 .venv/
 __pycache__/
 *.pyc
+
+# Local Configs
+.env
+
+# Pipeline Output / Logs / Quarantine / Benchmarks
 data/raw/
+data/staging/
+data/curated/
 data/partitioned/
+data/quarantine/
+data/benchmarks/
+logs/
+airflow/logs/
