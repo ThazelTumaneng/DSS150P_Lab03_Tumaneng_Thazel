@@ -8,9 +8,10 @@ Python 3.12.10
 ## Core Libraries
 - pandas==2.2.3
 - pyarrow==17.0.0
-- psycopg[binary]==3.2.3
+- psycopg2-binary==2.9.10
 - python-dotenv==1.0.1
 - PyYAML==6.0.2
+- SQLAlchemy==2.0.36
 
 ## Orcheatration
 - Apache Airflow (Dockerized)
