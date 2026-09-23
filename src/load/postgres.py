@@ -3,6 +3,8 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy import inspect
 from src.config import DB
 from sqlalchemy import create_engine
+from pathlib import Path
+from sqlalchemy import text
 
 db_url = f"postgresql+psycopg2://{DB['user']}:{DB['password']}@{DB['host']}:{DB.get('port', 5432)}/{DB['dbname']}"
 db_engine = create_engine(db_url)
@@ -63,6 +65,45 @@ def upsert_curated(df, run_id: str) -> int:
     return len(df)
 
 
-def load_partition(df, year: int, month: int, run_id: str) -> int:
+def load_partition(df_or_path, year: int, month: int, run_id: str) -> int:
     """Load only a selected year/month partition and record audit.partition_loads."""
-    raise NotImplementedError('Implement Goal 3 selected-partition load')
+    if isinstance(df_or_path, (str, Path)):
+        partition_path = Path(df_or_path) / f"order_year={year}" / f"order_month={month}"
+        if not partition_path.exists():
+            print(f"Partition for {year}-{month:02d} not found at {partition_path}")
+            return 0
+        df = pd.read_parquet(partition_path)
+    else:
+        df = df_or_path
+
+    if df.empty:
+        print(f"Partition for {year}-{month:02d} is empty.")
+        return 0
+
+    with db_engine.begin() as conn:
+        conn.exec_driver_sql("CREATE SCHEMA IF NOT EXISTS audit;")
+        conn.exec_driver_sql("""
+            CREATE TABLE IF NOT EXISTS audit.partition_loads (
+                load_id SERIAL PRIMARY KEY,
+                pipeline_run_id VARCHAR(100),
+                order_year INT,
+                order_month INT,
+                rows_loaded INT,
+                loaded_at_utc TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+            );
+        """)
+
+    # Call upsert_curated directly from this same file/module
+    loaded_count = upsert_curated(df, run_id)
+
+    with db_engine.begin() as conn:
+        conn.execute(
+            text("""
+                INSERT INTO audit.partition_loads (pipeline_run_id, order_year, order_month, rows_loaded)
+                VALUES (:run_id, :year, :month, :rows)
+            """),
+            {"run_id": run_id, "year": year, "month": month, "rows": loaded_count}
+        )
+
+    print(f"Successfully loaded partition {year}-{month:02d}: {loaded_count} rows processed and audited.")
+    return loaded_count
