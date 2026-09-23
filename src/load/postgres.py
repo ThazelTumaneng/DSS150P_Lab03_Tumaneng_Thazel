@@ -8,64 +8,71 @@ db_url = f"postgresql+psycopg2://{DB['user']}:{DB['password']}@{DB['host']}:{DB.
 db_engine = create_engine(db_url)
 
 def upsert_curated(df, run_id: str) -> int:
-    """Load curated.sales_order_lines using rerun-safe UPSERT semantics.
-
-    Requirement: order_id is the conflict key. A rerun with unchanged records
-    must not create duplicate business keys.
-    """
+    """Load curated.sales_order_lines using rerun-safe UPSERT semantics."""
     if df.empty:
         return 0
 
     table_name = 'sales_order_lines'
     schema_name = 'curated'
 
-    # 1. If table doesn't exist, create it using Pandas standard to_sql first
     inspector = inspect(db_engine)
     if not inspector.has_table(table_name, schema=schema_name):
         with db_engine.begin() as connection:
-            df.head(0).to_sql(
-                name=table_name,
-                schema=schema_name,
-                con=connection,
-                if_exists='fail',
-                index=False
-            )
-            connection.exec_driver_sql(
-                f"ALTER TABLE {schema_name}.{table_name} ADD CONSTRAINT sales_order_lines_pkey PRIMARY KEY (order_id);"
-            )
+            df.head(0).to_sql(name=table_name, schema=schema_name, con=connection, if_exists='fail', index=False)
+            connection.exec_driver_sql(f"ALTER TABLE {schema_name}.{table_name} ADD CONSTRAINT sales_order_lines_pkey PRIMARY KEY (order_id);")
 
-    # 2. Reflect table for native SQLAlchemy Core UPSERT execution
     metadata = MetaData()
     table_obj = Table(table_name, metadata, autoload_with=db_engine, schema=schema_name)
 
+    # 1. Schema Check & Alter
     with db_engine.begin() as conn:
         existing_cols = {c.name for c in table_obj.columns}
         for col in df.columns:
             if col not in existing_cols:
-                # Infer simple types or default to TEXT/FLOAT
-                col_type = "FLOAT" if "amount" in col or "price" in col else "TEXT"
-                if "year" in col or "month" in col or "quantity" in col:
-                    col_type = "INTEGER"
+                col_type = "FLOAT" if "amount" in col or "price" in col else "INTEGER" if "year" in col or "month" in col or "quantity" in col else "TEXT"
                 conn.exec_driver_sql(f"ALTER TABLE {schema_name}.{table_name} ADD COLUMN {col} {col_type};")
-        
-        # Re-reflect to pick up any newly added columns
         metadata.clear()
         table_obj = Table(table_name, metadata, autoload_with=db_engine, schema=schema_name)
 
+    # 2. The Missing Insert Logic
+    chunksize = 100
+    with db_engine.begin() as conn:
+        for i in range(0, len(df), chunksize):
+            chunk = df.iloc[i:i+chunksize]
+            data = chunk.to_dict(orient='records')
+            if not data:
+                continue
+            
+            stmt = insert(table_obj).values(data)
+            update_cols = {c.name: c for c in stmt.excluded if c.name != 'order_id'}
+            
+            if 'record_hash' in table_obj.c and 'record_hash' in df.columns:
+                upsert_stmt = stmt.on_conflict_do_update(
+                    index_elements=['order_id'],
+                    set_=update_cols,
+                    where=(table_obj.c.record_hash != stmt.excluded.record_hash)
+                )
+            else:
+                upsert_stmt = stmt.on_conflict_do_update(
+                    index_elements=['order_id'],
+                    set_=update_cols
+                )
+            conn.execute(upsert_stmt)
+            
+    # 3. Explicit Return
+    return len(df)
 
 def load_partition(df_or_path, year: int, month: int, run_id: str) -> int:
     """Load only a selected year/month partition and record audit.partition_loads."""
     if isinstance(df_or_path, (str, Path)):
         partition_path = Path(df_or_path) / f"order_year={year}" / f"order_month={month}"
         if not partition_path.exists():
-            print(f"Partition for {year}-{month:02d} not found at {partition_path}")
             return 0
         df = pd.read_parquet(partition_path)
     else:
         df = df_or_path
 
     if df.empty:
-        print(f"Partition for {year}-{month:02d} is empty.")
         return 0
 
     with db_engine.begin() as conn:
@@ -81,7 +88,6 @@ def load_partition(df_or_path, year: int, month: int, run_id: str) -> int:
             );
         """)
 
-    # Call upsert_curated directly from this same file/module
     loaded_count = upsert_curated(df, run_id)
 
     with db_engine.begin() as conn:
@@ -92,6 +98,4 @@ def load_partition(df_or_path, year: int, month: int, run_id: str) -> int:
             """),
             {"run_id": run_id, "year": year, "month": month, "rows": loaded_count}
         )
-
-    print(f"Successfully loaded partition {year}-{month:02d}: {loaded_count} rows processed and audited.")
     return loaded_count
